@@ -1,4 +1,4 @@
-import { useEffect} from "react";
+import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Jokes from "./Jokes/Jokes";
 import { loadJokes, loadMoreJokes } from "../store/jokes/actions";
@@ -10,13 +10,14 @@ import {
 from "@mui/material";
 
 function App() {
+    const [initLoading, setInitLoading] = useState(false)
     const dispatch = useDispatch();
     const { jokes, isLoading } = useSelector(state => state.jokes)
 
     const handleLoadMoreJokes = () => dispatch(loadMoreJokes())
 
     useEffect(() => {
-        dispatch(loadJokes())
+        dispatch(loadJokes()).then(() => setInitLoading(true))
     }, [dispatch])
 
     return (
@@ -30,9 +31,12 @@ function App() {
         >
           <Container maxWidth="lg">
               <Jokes jokes={jokes} />
-              <Box mt={3} textAlign="center">
-                  <Button disabled={isLoading} onClick={handleLoadMoreJokes} variant="contained">Load more</Button>
-              </Box>
+              {
+                  initLoading &&
+                  <Box mt={3} textAlign="center">
+                      <Button disabled={isLoading} onClick={handleLoadMoreJokes} variant="contained">Load more</Button>
+                  </Box>
+              }
           </Container>
         </Box>
     </div>
