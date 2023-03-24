@@ -11,7 +11,7 @@ from "@mui/material";
 
 function App() {
     const dispatch = useDispatch();
-    const { jokes } = useSelector(state => state.jokes)
+    const { jokes, isLoading } = useSelector(state => state.jokes)
 
     const handleLoadMoreJokes = () => dispatch(loadMoreJokes())
 
@@ -31,7 +31,7 @@ function App() {
           <Container maxWidth="lg">
               <Jokes jokes={jokes} />
               <Box mt={3} textAlign="center">
-                  <Button onClick={handleLoadMoreJokes} variant="contained">Load more</Button>
+                  <Button disabled={isLoading} onClick={handleLoadMoreJokes} variant="contained">Load more</Button>
               </Box>
           </Container>
         </Box>

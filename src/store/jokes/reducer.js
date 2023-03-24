@@ -16,21 +16,25 @@ const initialState = {
 const reducer = createReducer(initialState, builder => {
     builder.addCase(loadJokes.pending, state => {
         state.jokes = false;
+        state.isLoading = true
     });
     builder.addCase(loadJokes.fulfilled, (state, action) => {
         const { jokes } = action.payload;
 
         state.jokes = localJokes ? [...localJokes, ...jokes] : jokes;
         state.hasMoreJokes = Boolean(jokes.length);
+        state.isLoading = false
     });
     builder.addCase(loadMoreJokes.pending, state => {
         state.hasMoreJokes = null;
+        state.isLoading = true
     });
     builder.addCase(loadMoreJokes.fulfilled, (state, action) => {
         const { jokes } = action.payload;
 
         state.jokes = state.jokes.concat(jokes);
         state.hasMoreJokes = Boolean(jokes.length);
+        state.isLoading = false
     });
     builder.addCase(refreshJoke.fulfilled, (state, action) => {
         const { jokes, joke } = action.payload;
